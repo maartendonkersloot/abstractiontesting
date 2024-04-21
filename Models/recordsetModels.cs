@@ -11,6 +11,9 @@ using System.Text;
 using System.Net;
 using System.Xml.Linq;
 using FluentValidation;
+using System.ComponentModel;
+using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace abstractests.Models
 {
@@ -37,9 +40,11 @@ namespace abstractests.Models
 
     public class RecordSetBase
     {
+        [JsonPropertyName("Name")]
         public string name { get; set; }
+        [JsonPropertyName("Type")]
         public type type { get; set; }
-
+        [JsonPropertyName("Records")]
         public IEnumerable<baseRecord> records { get; set; }
     }
     public enum type
@@ -48,8 +53,9 @@ namespace abstractests.Models
         A  = 0,
         AAA = 1
     }
-
-   
+  
 
 
 }
+   
+

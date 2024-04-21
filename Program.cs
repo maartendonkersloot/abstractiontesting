@@ -1,4 +1,10 @@
+using abstractests.Models;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Net.Mime;
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -12,6 +18,9 @@ builder.Services.Configure<IISServerOptions>(options =>
     options.AllowSynchronousIO = true;
 });
 
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,8 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
 
 app.UseHttpsRedirection();
 

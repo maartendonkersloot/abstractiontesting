@@ -7,6 +7,10 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using abstractests.Validators;
 using abstractests.helpers;
+using System.Text.Json;
+using Newtonsoft.Json;
+using System.Net.Mime;
+using Newtonsoft.Json.Linq;
 
 namespace abstractests.Controllers
 {
@@ -26,10 +30,8 @@ namespace abstractests.Controllers
             _logger = logger;
         }
 
-       
-
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee([ModelBinder(typeof(MethodRequestBinder))][FromBody] RecordSetBase employee)
+        public IActionResult CreateEmployee([ModelBinder(typeof(MethodRequestBinder))] RecordSetBase employee)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -43,17 +45,20 @@ namespace abstractests.Controllers
             truevalidator validationRules = new truevalidator();
             var aads = validationRules.Validate(employee);
 
-
             var mapper = new Mapper(configuration);
             var dest = mapper.Map<RecordSetBase, RecordSetBaseDomain>(employee);
-            
+
+            string jsonTypeNameAll = JsonConvert.SerializeObject(employee, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.None
+            });
 
             try
             {
                 if (employee == null)
                     return BadRequest();
 
-                return StatusCode(StatusCodes.Status200OK, dest);
+                return StatusCode(StatusCodes.Status200OK, jsonTypeNameAll);
 
             }
             catch (Exception)
